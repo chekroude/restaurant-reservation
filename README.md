@@ -47,29 +47,31 @@ Le projet a été conçu comme un exercice complet de développement Full-Stack 
 
 ##  Structure du projet
 
+```
 restaurant-reservation/
 ├── README.md
 ├── LICENSE
 ├── .gitignore
-├── images/ # captures d'écran
+├── images/                 
 ├── backend/
-│ ├── app/
-│ │ ├── routes/ # endpoints API (auth, restaurants, réservations)
-│ │ ├── utils/ # sécurité (JWT, hashage des mots de passe)
-│ │ └── database.py # connexion MySQL
-│ ├── database.sql # schéma de la base de données
-│ ├── run.py # point d'entrée Flask
-│ └── requirements.txt
+│   ├── app/
+│   │   ├── routes/          
+│   │   └── utils/           
+│   ├── database.py          
+│   ├── database.sql        
+│   ├── run.py                
+│   └── requirements.txt
 └── frontend/
-├── css/
-│ └── style.css
-├── js/
-│ └── api.js # centralise les appels à l'API
-└── pages/
-├── login.html
-├── restaurants.html
-├── reserve.html
-└── history.html
+    ├── css/
+    │   └── style.css
+    ├── js/
+    │   └── api.js            
+    └── pages/
+        ├── login.html
+        ├── restaurants.html
+        ├── reserve.html
+        └── history.html
+```
 
 
 ## Installation locale
