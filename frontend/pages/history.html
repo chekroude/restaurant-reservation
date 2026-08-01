@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes réservations · Le Carnet</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav>
+        <strong>🍽 Le Carnet</strong>
+        <a href="restaurants.html">← Restaurants</a>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-eyebrow">Historique</div>
+        <h1>Mes réservations</h1>
+        <p>Retrouvez toutes vos tables réservées, passées et à venir.</p>
+    </div>
+
+    <div class="container">
+        <div id="historyList"></div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        if (!localStorage.getItem("token")) window.location.href = "login.html";
+
+        async function loadHistory() {
+            const list = document.getElementById("historyList");
+            try {
+                const history = await apiCall("/reservations/history");
+                if (history.length === 0) {
+                    list.innerHTML = `
+                        <div class="empty-state">
+                            <div class="icon">📅</div>
+                            <p>Aucune réservation pour le moment.</p>
+                            <a href="restaurants.html" class="btn" style="margin-top:1rem; display:inline-block;">Découvrir des restaurants</a>
+                        </div>`;
+                    return;
+                }
+                list.innerHTML = history.map(r => `
+                    <div class="history-card">
+                        <div class="info">
+                            <h3>${r.restaurant_name}</h3>
+                            <div class="meta">📍 ${r.city} · 📅 ${r.reservation_date} à ${r.reservation_time} · 👥 ${r.guests} pers.</div>
+                        </div>
+                        <span class="status-pill">${r.status}</span>
+                    </div>
+                `).join("");
+            } catch (err) {
+                list.innerHTML = `<p class="error">${err.message}</p>`;
+            }
+        }
+
+        loadHistory();
+    </script>
+</body>
+</html>

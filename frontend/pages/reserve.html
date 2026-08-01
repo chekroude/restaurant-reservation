@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réserver · Le Carnet</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav>
+        <strong>🍽 Le Carnet</strong>
+        <a href="restaurants.html">← Retour</a>
+    </nav>
+
+    <div class="container">
+        <div class="ticket-card" style="max-width:480px; margin:2rem auto 0;">
+            <div class="photo photo-grad-1" id="photoBlock" data-badge="">
+                <span class="monogram" id="monogramText"></span>
+            </div>
+            <div class="body">
+                <h3 id="restaurantName">Chargement...</h3>
+                <div class="meta" id="restaurantCity"></div>
+            </div>
+        </div>
+
+        <form class="panel" id="reserveForm">
+            <h2>Réserver une table</h2>
+            <div id="message"></div>
+            <input type="date" id="date" required>
+            <input type="time" id="time" required>
+            <input type="number" id="guests" placeholder="Nombre de personnes" min="1" required>
+            <button type="submit" class="btn btn-full">Confirmer la réservation</button>
+        </form>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        if (!localStorage.getItem("token")) window.location.href = "login.html";
+
+        const params = new URLSearchParams(window.location.search);
+        const restaurantId = params.get("id");
+
+        function initials(name) {
+            return name.split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
+        }
+
+        async function loadRestaurant() {
+            try {
+                const r = await apiCall(`/restaurants/${restaurantId}`);
+                document.getElementById("restaurantName").textContent = r.name;
+                document.getElementById("restaurantCity").textContent = ` ${r.city} — ${r.capacity} places`;
+                document.getElementById("monogramText").textContent = initials(r.name);
+                document.getElementById("photoBlock").setAttribute("data-badge", `${r.capacity} places`);
+            } catch (err) {
+                document.getElementById("restaurantName").textContent = "Restaurant introuvable";
+            }
+        }
+
+        document.getElementById("reserveForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const date = document.getElementById("date").value;
+            const time = document.getElementById("time").value;
+            const guests = document.getElementById("guests").value;
+            const msg = document.getElementById("message");
+
+            try {
+                await apiCall("/reservations", "POST", {
+                    restaurant_id: parseInt(restaurantId),
+                    date, time, guests: parseInt(guests)
+                });
+                msg.innerHTML = `<p class="success">✓ Réservation confirmée ! Redirection...</p>`;
+                setTimeout(() => window.location.href = "history.html", 1200);
+            } catch (err) {
+                msg.innerHTML = `<p class="error">${err.message}</p>`;
+            }
+        });
+
+        loadRestaurant();
+    </script>
+</body>
+</html>

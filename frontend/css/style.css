@@ -1,0 +1,330 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+    --ink: #231815;
+    --cream: #FAF6F0;
+    --cream-deep: #F0E9DD;
+    --wine: #7A2E2E;
+    --wine-deep: #5C2222;
+    --gold: #C9A227;
+    --sage: #5B6B4F;
+    --line: #E4DACB;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.5;
+}
+
+h1, h2, h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+/* ---------- NAV ---------- */
+nav {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 1.1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav strong {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+nav a {
+    color: var(--cream);
+    text-decoration: none;
+    margin-left: 1.5rem;
+    font-size: 0.9rem;
+    opacity: 0.85;
+    transition: opacity 0.15s ease;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+}
+
+nav a:hover { opacity: 1; border-bottom-color: var(--gold); }
+
+/* ---------- HERO ---------- */
+.hero {
+    background:
+        radial-gradient(circle at 85% 20%, rgba(201,162,39,0.12), transparent 45%),
+        var(--ink);
+    color: var(--cream);
+    padding: 3.5rem 2rem 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 220px; height: 220px;
+    border: 1px solid rgba(250,246,240,0.12);
+    border-radius: 50%;
+}
+
+.hero-eyebrow {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    font-weight: 600;
+}
+
+.hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin-top: 0.5rem;
+    max-width: 20ch;
+}
+
+.hero p {
+    margin-top: 0.7rem;
+    max-width: 42ch;
+    opacity: 0.75;
+    font-size: 0.95rem;
+}
+
+/* ---------- CONTAINER ---------- */
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
+}
+
+/* ---------- SEARCH BAR ---------- */
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.4rem 0.4rem 0.4rem 1.2rem;
+    margin-bottom: 2rem;
+    max-width: 480px;
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    padding: 0.5rem 0;
+    background: transparent;
+}
+
+/* ---------- RESTAURANT CARDS (ticket style) ---------- */
+.restaurant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.4rem;
+}
+
+.ticket-card {
+    background: white;
+    border-radius: 14px 14px 4px 4px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 2px rgba(35,24,21,0.04);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    position: relative;
+}
+
+.ticket-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(35,24,21,0.10);
+}
+
+.ticket-card .photo {
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ticket-card .photo .monogram {
+    font-family: 'Fraunces', serif;
+    font-size: 3rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.92);
+    text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+.photo-grad-1 { background: linear-gradient(135deg, #7A2E2E, #C9A227); }
+.photo-grad-2 { background: linear-gradient(135deg, #5B6B4F, #231815); }
+.photo-grad-3 { background: linear-gradient(135deg, #2E4A5C, #7A2E2E); }
+.photo-grad-4 { background: linear-gradient(135deg, #6B4423, #C9A227); }
+
+.ticket-card .photo::after {
+    content: attr(data-badge);
+    position: absolute;
+    top: 10px; right: 10px;
+    background: var(--gold);
+    color: var(--ink);
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    letter-spacing: 0.03em;
+}
+
+.ticket-card .body { padding: 1.1rem 1.2rem 1.3rem; }
+
+.ticket-card h3 { font-size: 1.15rem; margin-bottom: 0.2rem; }
+
+.ticket-card .meta {
+    font-size: 0.82rem;
+    color: var(--sage);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.ticket-card p.desc {
+    font-size: 0.85rem;
+    color: #5a4f49;
+    margin-bottom: 0.9rem;
+    min-height: 2.4em;
+}
+
+/* ---------- BUTTONS ---------- */
+.btn {
+    display: inline-block;
+    background: var(--wine);
+    color: var(--cream);
+    border: none;
+    padding: 0.65rem 1.3rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.15s ease;
+}
+
+.btn:hover { background: var(--wine-deep); }
+
+.btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+}
+
+.btn-ghost:hover { background: var(--cream-deep); }
+
+.btn-full { width: 100%; }
+
+/* ---------- FORMS ---------- */
+form.panel {
+    background: white;
+    padding: 2.2rem;
+    border-radius: 16px;
+    max-width: 420px;
+    margin: 3rem auto;
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 3px rgba(35,24,21,0.05);
+}
+
+form.panel h2 { margin-bottom: 1.5rem; }
+
+input, select, textarea {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    background: var(--cream);
+    color: var(--ink);
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--wine);
+    outline-offset: 1px;
+    background: white;
+}
+
+.error {
+    color: var(--wine);
+    background: #FBEAEA;
+    padding: 0.6rem 0.9rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+}
+
+.success {
+    color: var(--sage);
+    background: #EEF1EA;
+    padding: 0.6rem 0.9rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+}
+
+/* ---------- HISTORY LIST ---------- */
+.history-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--wine);
+    border-radius: 10px;
+    padding: 1rem 1.3rem;
+    margin-bottom: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.history-card .info h3 { font-size: 1.05rem; margin-bottom: 0.15rem; }
+.history-card .info .meta { font-size: 0.82rem; color: #5a4f49; }
+
+.status-pill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: var(--cream-deep);
+    color: var(--sage);
+    text-transform: capitalize;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #8a7f78;
+}
+
+.empty-state .icon { font-size: 2.2rem; margin-bottom: 0.7rem; }
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 600px) {
+    nav { flex-wrap: wrap; gap: 0.6rem; }
+    .container { padding: 1.5rem 1rem 2.5rem; }
+    form.panel { padding: 1.6rem; margin: 1.5rem auto; }
+}

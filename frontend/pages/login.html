@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion · Le Carnet</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav>
+        <strong>🍽 Le Carnet</strong>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-eyebrow">Réservation de tables</div>
+        <h1>Votre prochaine table vous attend.</h1>
+        <p>Trouvez un restaurant, choisissez l'heure, réservez en quelques secondes.</p>
+    </div>
+
+    <form class="panel" id="loginForm">
+        <h2>Connexion</h2>
+        <div id="message"></div>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Mot de passe" required>
+        <button type="submit" class="btn btn-full">Se connecter</button>
+        <p style="margin-top:1.2rem; text-align:center; font-size:0.88rem; color:#5a4f49;">
+            Pas encore de compte ? <a href="#" id="showRegister" style="color:var(--wine); font-weight:600;">Créer un compte</a>
+        </p>
+    </form>
+
+    <form class="panel" id="registerForm" style="display:none;">
+        <h2>Créer un compte</h2>
+        <div id="messageRegister"></div>
+        <input type="text" id="name" placeholder="Nom complet" required>
+        <input type="email" id="emailRegister" placeholder="Email" required>
+        <input type="password" id="passwordRegister" placeholder="Mot de passe (min 6 caractères)" required>
+        <button type="submit" class="btn btn-full">Créer mon compte</button>
+    </form>
+
+    <script src="../js/api.js"></script>
+    <script>
+        document.getElementById("showRegister").addEventListener("click", (e) => {
+            e.preventDefault();
+            document.getElementById("loginForm").style.display = "none";
+            document.getElementById("registerForm").style.display = "block";
+        });
+
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const msg = document.getElementById("message");
+            try {
+                const data = await apiCall("/login", "POST", { email, password });
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("userName", data.name);
+                window.location.href = "restaurants.html";
+            } catch (err) {
+                msg.innerHTML = `<p class="error">${err.message}</p>`;
+            }
+        });
+
+        document.getElementById("registerForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("emailRegister").value;
+            const password = document.getElementById("passwordRegister").value;
+            const msg = document.getElementById("messageRegister");
+            try {
+                const data = await apiCall("/register", "POST", { name, email, password });
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("userName", name);
+                window.location.href = "restaurants.html";
+            } catch (err) {
+                msg.innerHTML = `<p class="error">${err.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

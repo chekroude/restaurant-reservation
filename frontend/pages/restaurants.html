@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurants · Le Carnet</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav>
+        <strong>🍽 Le Carnet</strong>
+        <div>
+            <a href="history.html">Mes réservations</a>
+            <a href="#" id="logoutLink">Déconnexion</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-eyebrow">Bonjour </div>
+        <h1>Où mangeons-nous aujourd'hui ?</h1>
+        <p>Parcourez notre sélection et réservez votre table en un instant.</p>
+    </div>
+
+    <div class="container">
+        <div class="search-bar">
+            <span> </span>
+            <input type="text" id="citySearch" placeholder="Rechercher par ville...">
+        </div>
+        <div id="restaurantList" class="restaurant-grid"></div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        if (!localStorage.getItem("token")) window.location.href = "login.html";
+
+        const gradients = ["photo-grad-1", "photo-grad-2", "photo-grad-3", "photo-grad-4"];
+
+        function initials(name) {
+            return name.split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
+        }
+
+        document.getElementById("logoutLink").addEventListener("click", () => {
+            localStorage.removeItem("token");
+            window.location.href = "login.html";
+        });
+
+        async function loadRestaurants(city = "") {
+            const list = document.getElementById("restaurantList");
+            try {
+                const endpoint = city ? `/restaurants?city=${encodeURIComponent(city)}` : "/restaurants";
+                const restaurants = await apiCall(endpoint);
+
+                if (restaurants.length === 0) {
+                    list.innerHTML = `
+                        <div class="empty-state" style="grid-column:1/-1;">
+                            <div class="icon">🔍</div>
+                            <p>Aucun restaurant ne correspond à cette recherche.</p>
+                        </div>`;
+                    return;
+                }
+
+                list.innerHTML = restaurants.map((r, i) => `
+                    <div class="ticket-card">
+                        <div class="photo ${gradients[i % gradients.length]}" data-badge="${r.capacity} places">
+                            <span class="monogram">${initials(r.name)}</span>
+                        </div>
+                        <div class="body">
+                            <h3>${r.name}</h3>
+                            <div class="meta"> ${r.city}</div>
+                            <p class="desc">${r.description || ""}</p>
+                            <a href="reserve.html?id=${r.id}" class="btn btn-full">Réserver une table</a>
+                        </div>
+                    </div>
+                `).join("");
+            } catch (err) {
+                list.innerHTML = `<p class="error" style="grid-column:1/-1;">${err.message}</p>`;
+            }
+        }
+
+        document.getElementById("citySearch").addEventListener("input", (e) => {
+            loadRestaurants(e.target.value);
+        });
+
+        loadRestaurants();
+    </script>
+</body>
+</html>
